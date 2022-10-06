@@ -22,7 +22,7 @@ RUN \
  mv /tmp/terraria/${version}/Linux/* /app/terraria/bin && \
  chmod +x /app/terraria/bin/TerrariaServer.bin.x86_64 && \
  rm -rf /tmp/terraria /tmp/terraria.zip && \
- apt remove unzip && \
+ apt remove -y unzip && \
  apt-get clean && \
  rm -rf \
 	/tmp/* \
