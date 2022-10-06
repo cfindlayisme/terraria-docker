@@ -27,7 +27,7 @@ RUN \
 	/tmp/* \
 	/var/tmp/*
 
-# ports and volumes
+# Port and the volume for the config + world
 EXPOSE 7777
 VOLUME ["/config"]
 
