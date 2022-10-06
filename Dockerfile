@@ -1,6 +1,9 @@
 # Re-do of https://github.com/cfindlayisme/docker-terraria from scratch which is a fork of https://github.com/kaysond/docker-terraria
 #
 # Using buster-slim for an image to shrink things. Tried to do alpine 3.16 but it was a no-go due to libc issues (Oct 2022)
+#
+# Author: Chuck Findlay <chuck@findlayis.me>
+# License: LGPL v3.0
 
 FROM debian:buster-slim
 
