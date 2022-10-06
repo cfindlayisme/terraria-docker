@@ -4,7 +4,7 @@
 
 FROM debian:buster-slim
 
-ARG version="1443"
+ARG version="1444"
 LABEL maintainer="chuck@findlayis.me"
 
 ADD "https://terraria.org/api/download/pc-dedicated-server/terraria-server-${version}.zip" /tmp/terraria.zip
