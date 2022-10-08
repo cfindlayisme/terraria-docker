@@ -1,4 +1,4 @@
-Simple vanilla terraris server image. Designed to be tiny.
+Simple vanilla terraria server image. Designed to be tiny.
 
 You simply need to mount the volume /config and put two files in it:
 - serverconfig.txt
