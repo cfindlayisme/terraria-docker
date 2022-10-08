@@ -1,0 +1,27 @@
+# Additon to my docker image for terraria that auto-copies config and world regularly to a GCP bucket
+#
+# TODO: Make it detect if no world/config is available, and if so, pull it from GCP
+#
+# Author: Chuck Findlay <chuck@findlayis.me>
+# License: LGPL v3.0
+
+FROM cfindlayisme/terraria-docker:latest
+
+RUN \
+    apt update && \
+    apt install -y cron
+
+COPY cron.d/gcs-hourly-backup /etc/cron.d
+RUN chmod 0644 /etc/cron.d/gcs-hourly-backup
+RUN crontab /etc/cron.d/gcs-hourly-backup
+
+# Install cloud SDK for GCS. This is large unfortunately
+RUN \
+    echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
+    apt install apt-transport-https ca-certificates gnupg curl -y && \
+    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add - && \
+    apt update && apt-get install google-cloud-sdk -y
+
+#TODO: Authentication for gcloud setup, env args for bucket etc
+
+CMD cron && /app/terraria/bin/TerrariaServer.bin.x86_64 -config /config/serverconfig.txt
