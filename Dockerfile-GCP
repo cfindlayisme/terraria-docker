@@ -1,6 +1,10 @@
 # Additon to my docker image for terraria that auto-copies config and world regularly to a GCP bucket
 #
+# GCS Service account with the right permissions needs to be created.
+# Add -e GCS_ACCOUNT=gcsemail@gmail.com -e GCS_PROJECT=project to run command. Service account key file looked for is /config/gcs-key.json
+#
 # TODO: Make it detect if no world/config is available, and if so, pull it from GCP
+#        - TODO note: this is going into gcp-start.sh
 #
 # Author: Chuck Findlay <chuck@findlayis.me>
 # License: LGPL v3.0
@@ -22,6 +26,6 @@ RUN \
     curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add - && \
     apt update && apt-get install google-cloud-sdk -y
 
-#TODO: Authentication for gcloud setup, env args for bucket etc
+COPY gcp-start.sh /
 
-CMD cron && /app/terraria/bin/TerrariaServer.bin.x86_64 -config /config/serverconfig.txt
+CMD /gcp-start.sh
