@@ -20,6 +20,7 @@ RUN chmod 0644 /etc/cron.d/gcs-hourly-backup
 RUN crontab /etc/cron.d/gcs-hourly-backup
 
 # Install cloud SDK for GCS. This is large unfortunately
+# TODO: Find a way to make this far smaller (we only really need gsutil to copy)
 RUN \
     echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
     apt install apt-transport-https ca-certificates gnupg curl -y && \
