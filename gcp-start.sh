@@ -29,7 +29,7 @@ if [ ! -f /config/serverconfig.txt ]; then
 fi
 
 # Check for world. Don't need to fail badly though if it isn't there
-if [ ! -f /config/World.wld]; then
+if [ ! -f /config/World.wld ]; then
     if gsutil cp gs://$GCS_BUCKET$GCS_BUCKET_PATH/World.wld /config/World.wld; then
         echo "Grabbed config from GCS bucket since it did not exist locally!"
     else
