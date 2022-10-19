@@ -6,7 +6,7 @@ You simply need to mount the volume /config and put two files in it:
 
 Example to run:
 
-    docker run -it -p 7777:7777 -v /home/user/terraria:/config cfindlayisme/docker-terraria-gcp 
+    docker run -it -p 7777:7777 -v /home/user/terraria:/config cfindlayisme/docker-terraria
 
 Note there is also a Dockerfile-GCP. This image is designed for usage with Google Cloud Services for auto backup/import of the world and server configuration. Allows me to create & destroy container instances on GCS for the odd day I'm playing with friends. It does not require running on GCP itself, just a bucket to put the config & world into. 
 
