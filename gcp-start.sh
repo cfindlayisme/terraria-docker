@@ -18,10 +18,9 @@ fi
 # Authenticate to GCS
 gcloud auth activate-service-account $GCS_ACCOUNT --key-file=/config/gcs-key.json
 
-# TODO: This should just pull from the backup for us, and only fail out of there isn't one available. Same goes for world
-# Should have a flag though for the world so we can create one if we want first run (or just pop a warning if config exists but no world that it will autocreate)
+# Check for serverconfig - and exit if we cannot get it
 if [ ! -f /config/serverconfig.txt ]; then
-    if gsutil cp gs://$GCS_BUCKET$GCS_BUCKET_PATH /config/serverconfig.txt; then
+    if gsutil cp gs://$GCS_BUCKET$GCS_BUCKET_PATH/serverconfig.txt /config/serverconfig.txt; then
         echo "Grabbed config from GCS bucket since it did not exist locally!"
     else
         echo "No serverconfig.txt file present here or in cloud bucket. Exiting!"
@@ -29,11 +28,20 @@ if [ ! -f /config/serverconfig.txt ]; then
     fi
 fi
 
+# Check for world. Don't need to fail badly though if it isn't there
+if [ ! -f /config/World.wld]; then
+    if gsutil cp gs://$GCS_BUCKET$GCS_BUCKET_PATH/World.wld /config/World.wld; then
+        echo "Grabbed config from GCS bucket since it did not exist locally!"
+    else
+        echo "World does not exist locally or in the bucket, so lets hope you have auto-generation enabled."
+    fi
+fi
+
 # Start terrara
 if /app/terraria/bin/TerrariaServer.bin.x86_64 -config /config/serverconfig.txt; then
     # Copy over to GCS once TerrariaServer is done
     gsutil cp /config/World.wld gs://$GCS_BUCKET$GCS_BUCKET_PATH/World.wld
-    gsutil cp /config/serverconfig.txt gs://$GCS_BUCKET$GCS_BUCKET_PATH
+    gsutil cp /config/serverconfig.txt gs://$GCS_BUCKET$GCS_BUCKET_PATH/serverconfig.txt
     echo "Server exited gracefully. Copied World.wld and serverconfig.txt to GCS bucket"
 else
     echo "Server exited non-gracefully - not copying the world and server config to the GCP bucket"
