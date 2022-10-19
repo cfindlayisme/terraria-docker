@@ -1,7 +1,7 @@
 # Additon to my docker image for terraria that auto-copies config and world regularly to a GCP bucket
 #
 # GCS Service account with the right permissions needs to be created.
-# Add -e GCS_ACCOUNT=gcsemail@gmail.com -e GCS_PROJECT=project to run command. Service account key file looked for is /config/gcs-key.json
+# Add -e GCS_BUCKET=bucket -e GCS_BUCKET_PATH=/terraria to run command. Service account key file looked for is /config/gcs-key.json
 #
 # TODO: Make it detect if no world/config is available, and if so, pull it from GCP
 #        - TODO note: this is going into gcp-start.sh
@@ -13,7 +13,8 @@ FROM cfindlayisme/terraria-docker:latest
 
 RUN \
     apt update && \
-    apt install -y cron
+    apt install -y cron && \
+    apt clean
 
 COPY cron.d/gcs-hourly-backup /etc/cron.d
 RUN chmod 0644 /etc/cron.d/gcs-hourly-backup
