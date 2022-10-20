@@ -14,8 +14,7 @@ FROM cfindlayisme/terraria-docker:latest
 RUN \
     apt update && \
     apt install -y cron && \
-    apt clean && \
-    mkdir /etc/cron.d
+    apt clean
 
 # Done in gcp-start.sh now
 #COPY cron.d/gcs-hourly-backup /etc/cron.d
