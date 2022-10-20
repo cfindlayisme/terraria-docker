@@ -1,3 +1,0 @@
-#!/bin/bash
-
-@hourly gcloud auth activate-service-account --key-file=/config/gcs-key.json && gsutil cp /config/World.wld gs://$GCS_BUCKET$GCS_BUCKET_PATH/World.wld
