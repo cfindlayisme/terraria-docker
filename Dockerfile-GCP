@@ -1,10 +1,8 @@
-# Additon to my docker image for terraria that auto-copies config and world regularly to a GCP bucket
+# Additon to my docker image for terraria that auto-copies world hourly to a GCP bucket, and config + world upon exit.
+# Also grabs each one from GCP on startup if needed.
 #
 # GCS Service account with the right permissions needs to be created.
 # Add -e GCS_BUCKET=bucket -e GCS_BUCKET_PATH=/terraria to run command. Service account key file looked for is /config/gcs-key.json
-#
-# TODO: Make it detect if no world/config is available, and if so, pull it from GCP
-#        - TODO note: this is going into gcp-start.sh
 #
 # Author: Chuck Findlay <chuck@findlayis.me>
 # License: LGPL v3.0
