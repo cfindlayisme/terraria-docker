@@ -10,7 +10,6 @@ chmod 0644 /etc/cron.d/gcs-hourly-backup
 crontab /etc/cron.d/gcs-hourly-backup
 
 # Start cron so it runs auto backups
-# TODO: pass env variables for GCS account and project to cron somehow? Or does it manage to make it here?
 cron
 
 # Check for service account key
@@ -20,7 +19,7 @@ if [ ! -f /config/gcs-key.json ]; then
 fi
 
 # Authenticate to GCS
-gcloud auth activate-service-account $GCS_ACCOUNT --key-file=/config/gcs-key.json
+gcloud auth activate-service-account --key-file=/config/gcs-key.json
 
 # Check for serverconfig - and exit if we cannot get it
 if [ ! -f /config/serverconfig.txt ]; then
