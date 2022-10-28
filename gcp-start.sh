@@ -24,7 +24,7 @@ gcloud auth activate-service-account --key-file=/config/gcs-key.json
 # Check for serverconfig - and exit if we cannot get it
 if [ ! -f /config/serverconfig.txt ]; then
     if gsutil cp gs://$GCS_BUCKET$GCS_BUCKET_PATH/serverconfig.txt /config/serverconfig.txt; then
-        echo "Grabbed config from GCS bucket since it did not exist locally!"
+        echo "Grabbed serverconfig.txt from GCS bucket since it did not exist locally!"
     else
         echo "No serverconfig.txt file present here or in cloud bucket. Exiting!"
         exit 1
@@ -34,9 +34,9 @@ fi
 # Check for world. Don't need to fail badly though if it isn't there
 if [ ! -f /config/World.wld ]; then
     if gsutil cp gs://$GCS_BUCKET$GCS_BUCKET_PATH/World.wld /config/World.wld; then
-        echo "Grabbed config from GCS bucket since it did not exist locally!"
+        echo "Grabbed World.wld from GCS bucket since it did not exist locally!"
     else
-        echo "World does not exist locally or in the bucket, so lets hope you have auto-generation enabled."
+        echo "World.wld does not exist locally or in the bucket, so lets hope you have auto-generation enabled."
     fi
 fi
 
