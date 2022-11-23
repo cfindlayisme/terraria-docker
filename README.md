@@ -16,4 +16,10 @@ Example to run this version:
 
 This assumes that you have /config/gcs-key.json with a service account setup for it to use. You can export this from IAM service accounts in json key format.
 
+Extra ENV variables:
+- CURL_STARTUP=URL and CURL_CLOSE=url
+  - URLs to hit with curl on startup and exit. Ie, in my case so my dynamic google DNS updates for me
+    - CURL_STARTUP=https://user:password@domains.google.com/nic/update?hostname=hostname
+    - CURL_CLOSE=https://user:password@domains.google.com/nic/update?hostname=hostname&offline=yes
+
 Note I do not have public images for this as that would include files I have no copyright to. So, to use this, you'll have to build the images yourself.

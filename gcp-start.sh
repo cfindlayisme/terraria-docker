@@ -40,6 +40,11 @@ if [ ! -f /config/World.wld ]; then
     fi
 fi
 
+# URL to hit on startup - for example, to trigger a dynamic DNS update on google domains
+if [ ! -z "$CURL_STARTUP" ]; then
+    curl -4 $CURL_STARTUP
+fi
+
 # Start terrara
 if /app/terraria/bin/TerrariaServer.bin.x86_64 -config /config/serverconfig.txt; then
     # Copy over to GCS once TerrariaServer is done
@@ -48,4 +53,8 @@ if /app/terraria/bin/TerrariaServer.bin.x86_64 -config /config/serverconfig.txt;
     echo "Server exited gracefully. Copied World.wld and serverconfig.txt to GCS bucket"
 else
     echo "Server exited non-gracefully - not copying the world and server config to the GCP bucket"
+fi
+
+if [ ! -z "$CURL_CLOSE" ]; then
+    curl -4 $CURL_CLOSE
 fi

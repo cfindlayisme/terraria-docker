@@ -11,7 +11,7 @@ FROM cfindlayisme/terraria-docker:latest
 
 RUN \
     apt update && \
-    apt install -y cron && \
+    apt install -y cron curl && \
     apt clean
 
 # Install cloud SDK for GCS. This is large unfortunately
