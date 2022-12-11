@@ -15,7 +15,7 @@ build-job:
     - echo "Build docker image one.."
     - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA ./
     - echo "Success - building the GCP image.."
-    - docker build -t $CI_REGISTRY_IMAGE2:$CI_COMMIT_SHORT_SHA ./
+    - docker build -f Dockerfile-GCP $CI_REGISTRY_IMAGE2:$CI_COMMIT_SHORT_SHA ./
     - echo "Success, now pushing both to registry"
     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
     - docker push $CI_REGISTRY_IMAGE2:$CI_COMMIT_SHORT_SHA
