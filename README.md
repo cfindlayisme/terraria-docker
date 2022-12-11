@@ -23,3 +23,5 @@ Extra ENV variables:
     - CURL_CLOSE=https://user:password@domains.google.com/nic/update?hostname=hostname&offline=yes
 
 Note I do not have public images for this as that would include files I have no copyright to. So, to use this, you'll have to build the images yourself.
+
+TODO: Mod support
