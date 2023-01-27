@@ -14,11 +14,15 @@ build-job:
   script:
     - echo "Build docker image one.."
     - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA ./
+    - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA $CI_REGISTRY_IMAGE:latest
     - echo "Success - building the GCP image.."
     - docker build -f ./Dockerfile-GCP -t $CI_REGISTRY_IMAGE2:$CI_COMMIT_SHORT_SHA ./
-    - echo "Success, now pushing both to registry"
+    - docker tag $CI_REGISTRY_IMAGE2:$CI_COMMIT_SHORT_SHA $CI_REGISTRY_IMAGE2:latest
+    - echo "Success, now pushing both to registry as tag and latest"
     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
     - docker push $CI_REGISTRY_IMAGE2:$CI_COMMIT_SHORT_SHA
+    - docker push $CI_REGISTRY_IMAGE:latest
+    - docker push $CI_REGISTRY_IMAGE2:latest
 
 deploy-job:
   stage: deploy 
