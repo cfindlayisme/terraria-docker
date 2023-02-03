@@ -1,4 +1,4 @@
-# Additon to my docker image for terraria that auto-copies world hourly to a GCP bucket, and config + world upon exit.
+# Additon to my docker image for terraria that auto-copies world every six hours to a GCP bucket, and config + world upon exit.
 # Also grabs each one from GCP on startup if needed.
 #
 # GCS Service account with the right permissions needs to be created.
