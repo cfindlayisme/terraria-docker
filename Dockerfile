@@ -5,7 +5,7 @@
 # Author: Chuck Findlay <chuck@findlayis.me>
 # License: LGPL v3.0
 
-FROM debian:bullseye-slim
+FROM debian:11.6-slim
 
 ARG version="1449"
 LABEL maintainer="chuck@findlayis.me"
