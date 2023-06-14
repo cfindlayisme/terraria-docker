@@ -7,7 +7,7 @@
 # Author: Chuck Findlay <chuck@findlayis.me>
 # License: LGPL v3.0
 
-FROM cfindlayisme/terraria-docker:latest
+FROM gitea.findlayis.me/chuck/terraria-docker:latest
 
 RUN \
     apt update && \
