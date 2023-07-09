@@ -5,28 +5,28 @@
 # Author: Chuck Findlay <chuck@findlayis.me>
 # License: LGPL v3.0
 
-FROM debian:bookworm-slim
+FROM debian:bookworm-slim AS builder
 
 ARG version="1449"
 LABEL maintainer="chuck@findlayis.me"
 
 ADD "https://terraria.org/api/download/pc-dedicated-server/terraria-server-${version}.zip" /tmp/terraria.zip
+
 RUN \
- echo "**** Install terraria ****" && \
  apt update && \
- apt install -y unzip screen && \
- mkdir -p /root/.local/share/Terraria && \
- echo "{}" > /root/.local/share/Terraria/favorites.json && \
+ apt install -y unzip && \
  mkdir -p /app/terraria/bin && \
  unzip /tmp/terraria.zip ${version}'/Linux/*' -d /tmp/terraria && \
  mv /tmp/terraria/${version}/Linux/* /app/terraria/bin && \
- chmod +x /app/terraria/bin/TerrariaServer.bin.x86_64 && \
- rm -rf /tmp/terraria /tmp/terraria.zip && \
- apt remove -y unzip && \
- apt-get clean && \
- rm -rf \
-	/tmp/* \
-	/var/tmp/*
+ chmod +x /app/terraria/bin/TerrariaServer.bin.x86_64
+
+FROM debian:bookworm-slim
+
+RUN \
+	mkdir -p /root/.local/share/Terraria && \
+ 	echo "{}" > /root/.local/share/Terraria/favorites.json
+
+COPY --from=builder /app /app
 
 # Port and the volume for the config + world
 EXPOSE 7777
