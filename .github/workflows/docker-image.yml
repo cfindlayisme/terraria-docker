@@ -27,5 +27,14 @@ jobs:
         password: ${{ secrets.DOCKER_TOKEN }}
     - name: Push the Docker image
       run: docker push ${{ secrets.DOCKER_REPO }}
+
+    - name: Run Snyk to check Docker image for vulnerabilities
+      uses: snyk/actions/docker@master
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      with:
+        image: ${{ secrets.DOCKER_REPO }}
+        args: --severity-threshold=high
+
     - name: Push the second Docker image
       run: docker push ${{ secrets.DOCKER_REPO2 }}
