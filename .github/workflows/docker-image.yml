@@ -27,13 +27,13 @@ jobs:
         password: ${{ secrets.DOCKER_TOKEN }}
 
 
-    # - name: Run Snyk to check first (vanilla terraria) Docker image for vulnerabilities
-    #   uses: snyk/actions/docker@master
-    #   env:
-    #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-    #   with:
-    #     image: ${{ secrets.DOCKER_REPO }}
-    #     args: --severity-threshold=high
+    - name: Run Snyk to check first (vanilla terraria) Docker image for vulnerabilities
+      uses: snyk/actions/docker@master
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      with:
+        image: ${{ secrets.DOCKER_REPO }}
+        args: --severity-threshold=high
 
     - name: Push the Docker image
       run: docker push ${{ secrets.DOCKER_REPO }}
