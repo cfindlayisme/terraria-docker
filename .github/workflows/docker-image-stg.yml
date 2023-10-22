@@ -1,0 +1,34 @@
+name: Build & Push Staging Docker Image
+
+on:
+  push:
+  pull_request:
+    branches: [master, main]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Docker Buildx
+      id: buildx
+      uses: docker/setup-buildx-action@v2
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag ${{ secrets.DOCKER_REPO }}-stg
+    - name: Build the second Docker image
+      run: docker build . --file Dockerfile-GCP --tag ${{ secrets.DOCKER_REPO2 }}-stg
+    
+    - name: Login to Docker Repository
+      uses: docker/login-action@v2
+      with:
+        registry: ${{ secrets.DOCKER_REGISTRY }}
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_TOKEN }}
+
+    - name: Push the Docker image with -stg tag
+      run: docker push ${{ secrets.DOCKER_REPO }}-stg
+    - name: Push the second Docker image with -stg tag
+      run: docker push ${{ secrets.DOCKER_REPO2 }}-stg
