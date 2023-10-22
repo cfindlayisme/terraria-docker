@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+
+  terrariagcp:
+    image: gitea.findlayis.me/chuck/terraria-docker-gcp:latest
+    container_name: terrariagcp
+    ports:
+      - "7777:7777"
+    restart: unless-stopped
+    volumes:
+      - /srv/terraria/data:/config
+    environment:
+      GCS_BUCKET: "bucket"
+      GCS_BUCKET_PATH: "/terraria"
