@@ -40,3 +40,15 @@ jobs:
 
     - name: Push the second Docker image
       run: docker push ${{ secrets.DOCKER_REPO2 }}
+
+    - name: Deploy GCP image to production
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_SECRET }}
+        port: 22
+        script: |
+          cd /srv/terraria
+          docker compose pull
+          docker compose up -d
