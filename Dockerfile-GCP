@@ -21,6 +21,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # TODO: Find a way to make this far smaller (we only really need gsutil to copy)
 RUN \
     echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
+    apt-get update && \
     apt-get install --no-install-recommends apt-transport-https=2.6.1 ca-certificates=20230311 gnupg=2.2.40-1.1 minizip=1.1-8+deb12u1 -y && \
     curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add - && \
     apt-get update && apt-get install --no-install-recommends google-cloud-sdk=451.0.1-0 -y && apt-get clean && \
