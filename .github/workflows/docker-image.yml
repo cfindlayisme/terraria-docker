@@ -55,7 +55,7 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   build:
-    needs: [sonar, lint]
+    needs: [sonar]
 
     runs-on: ubuntu-latest
 
