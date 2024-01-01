@@ -81,7 +81,7 @@ jobs:
       run: docker push ${{ secrets.DOCKER_REPO }}-stg
     - name: Push the second Docker image with -stg tag
       run: docker push ${{ secrets.DOCKER_REPO2 }}-stg
-      
+
     - name: Notify IRC Success
       run: |
         export COMMIT_MSG=$(git log -1 --pretty=%B)
@@ -95,3 +95,4 @@ jobs:
         export NICK=$(head /dev/urandom | tr -dc A-Za-z | head -c 9 ; echo '')
         bash -c 'exec 3<>/dev/tcp/${{ secrets.IRC_SERVER }}/6667; echo -e "USER github_actions 0 * :GitHub Actions\nNICK $NICK\nJOIN ${{ secrets.IRC_CHANNEL }}" >&3; sleep 2; echo -e "PRIVMSG ${{ secrets.IRC_CHANNEL }} :Build of ${{ secrets.DOCKER_REPO }}:${{ github.SHA }}-stg && ${{ secrets.DOCKER_REPO2 }}:${{ github.SHA }}-stg failed with commit message: "$COMMIT_MSG"\nQUIT" >&3; cat <&3'
       if: failure()
+      
