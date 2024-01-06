@@ -55,13 +55,13 @@ jobs:
     - name: Notify IRC Success
       run: |
         export COMMIT_MSG=$(git log -1 --pretty=%B)
-        export NICK=$(head /dev/urandom | tr -dc A-Za-z | head -c 9 ; echo '')
-        bash -c 'exec 3<>/dev/tcp/${{ secrets.IRC_SERVER }}/6667; echo -e "USER github_actions 0 * :GitHub Actions\nNICK $NICK\nJOIN ${{ secrets.IRC_CHANNEL }}" >&3; sleep 2; echo -e "PRIVMSG ${{ secrets.IRC_CHANNEL }} :\x0303,01Build of ${{ secrets.DOCKER_REPO }}:latest && ${{ secrets.DOCKER_REPO2 }}:latest completed successfully with commit message: "$COMMIT_MSG"\x03\nQUIT" >&3; cat <&3'
+        export MESSAGE="Build of ${{ secrets.DOCKER_REPO }}:latest and ${{ secrets.DOCKER_REPO2 }}:latest completed successfully with commit message: $COMMIT_MSG. See https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        curl -X POST -H "Content-Type: application/json" -d "{\"message\": \"$MESSAGE\", \"password\": \"${{ secrets.WMB_PASSWORD }}\", \"colourcode\": 3}" https://convos.findlayis.me/wmb/message
       if: success()
 
     - name: Notify IRC Failure
       run: |
         export COMMIT_MSG=$(git log -1 --pretty=%B)
-        export NICK=$(head /dev/urandom | tr -dc A-Za-z | head -c 9 ; echo '')
-        bash -c 'exec 3<>/dev/tcp/${{ secrets.IRC_SERVER }}/6667; echo -e "USER github_actions 0 * :GitHub Actions\nNICK $NICK\nJOIN ${{ secrets.IRC_CHANNEL }}" >&3; sleep 2; echo -e "PRIVMSG ${{ secrets.IRC_CHANNEL }} :\x0304,01Build of ${{ secrets.DOCKER_REPO }}:latest && ${{ secrets.DOCKER_REPO2 }}:latest failed with commit message: "$COMMIT_MSG"\x03\nQUIT" >&3; cat <&3'
+        export MESSAGE="Build of ${{ secrets.DOCKER_REPO }}:latest and ${{ secrets.DOCKER_REPO2 }}:latest failed with commit message: $COMMIT_MSG. See https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        curl -X POST -H "Content-Type: application/json" -d "{\"message\": \"$MESSAGE\", \"password\": \"${{ secrets.WMB_PASSWORD }}\", \"colourcode\": 4}" https://convos.findlayis.me/wmb/message
       if: failure()
