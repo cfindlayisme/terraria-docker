@@ -44,7 +44,7 @@ jobs:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
         image: ${{ secrets.DOCKER_REPO }}
-        args: --severity-threshold=critical --fail-on=all
+        args: --severity-threshold=high --fail-on=all
 
     - name: Push the Docker image
       run: docker push ${{ secrets.DOCKER_REPO }}
