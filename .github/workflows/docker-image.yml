@@ -31,7 +31,7 @@ jobs:
     - name: Build the second Docker image
       run: docker build . --file Dockerfile-GCP --tag ${{ secrets.DOCKER_REPO2 }}
     - name: Login to Docker Repository
-      uses: docker/login-action@v2
+      uses: docker/login-action@v3
       with:
         registry: ${{ secrets.DOCKER_REGISTRY }}
         username: ${{ secrets.DOCKER_USERNAME }}
