@@ -5,7 +5,7 @@
 # Author: Chuck Findlay <chuck@findlayis.me>
 # License: LGPL v3.0
 
-FROM debian:bookworm-slim AS builder
+FROM debian:12.5-slim AS builder
 
 ARG version="1449"
 LABEL maintainer="chuck@findlayis.me"
@@ -20,7 +20,7 @@ RUN \
  mv /tmp/terraria/${version}/Linux/* /app/terraria/bin && \
  chmod +x /app/terraria/bin/TerrariaServer.bin.x86_64
 
-FROM debian:bookworm-slim
+FROM debian:12.5-slim
 
 RUN \
 	mkdir -p /root/.local/share/Terraria && \
