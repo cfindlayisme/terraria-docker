@@ -1,0 +1,50 @@
+name: Update terraria Version
+
+# This was reverse-engineered from the terraria.org site to just check the version of the latest stable release so I don't need to often
+# It was a bugger to figure out since the site uses react, but alas, this script should work for now
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # This will run the workflow every day at midnight
+  workflow_dispatch:  # This allows the workflow to be manually triggered
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Fetch latest stable version
+        id: fetch-version
+        run: |
+          VERSION=$(curl -s https://terraria.org/api/get/dedicated-servers-names | jq -r '.[1]' | grep -oP '(?<=terraria-server-).*?(?=.zip)')
+          echo "::set-output name=version::$VERSION"
+          
+      - name: Check and update Dockerfile
+        id: update
+        run: |
+            CURRENT_VERSION=$(grep -oP '(?<=ARG version=").*?(?=")' Dockerfile)
+            if [ "$CURRENT_VERSION" != "${{ steps.fetch-version.outputs.version }}" ]; then
+                sed -i 's/ARG version="[^"]*"/ARG version="'${{ steps.fetch-version.outputs.version }}'"/' Dockerfile
+                echo "::set-output name=updated::true"
+            fi
+
+      - name: Commit and push if Dockerfile was updated
+        if: steps.update.outputs.updated == 'true'
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git add Dockerfile
+          git commit -m "Update terraria version to ${{ steps.fetch-version.outputs.version }}"
+          git push origin HEAD:refs/heads/update-terraria-version-${{ steps.fetch-version.outputs.version }}
+
+      - name: Create Pull Request
+        if: steps.update.outputs.updated == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+                title: "Update terraria version to ${{ steps.fetch-version.outputs.version }}"
+                branch: "update-terraria-version-${{ steps.fetch-version.outputs.version }}"
+                base: "main"  # replace with your default branch if it's not "main"
+                body: "Automatically detected upstream version of terraria from developer's API"
