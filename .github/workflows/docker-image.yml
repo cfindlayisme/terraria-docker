@@ -58,7 +58,7 @@ jobs:
     - name: Tag and push the second Docker image to GitHub Packages
       run: |
         docker tag ${{ secrets.DOCKER_REPO2 }}:latest ghcr.io/${{ github.repository }}:latest-gcp
-        docker push ghcr.io/${{ github.repository }}:latest
+        docker push ghcr.io/${{ github.repository }}:latest-gcp
       if: github.ref == 'refs/heads/main'
     - name: Notify IRC Success
       run: |
