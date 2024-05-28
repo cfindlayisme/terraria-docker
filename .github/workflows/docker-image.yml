@@ -50,6 +50,16 @@ jobs:
     - name: Push the second Docker image
       run: docker push ${{ secrets.DOCKER_REPO2 }}
       if: github.ref == 'refs/heads/main'
+    - name: Tag and push the first Docker image to GitHub Packages
+      run: |
+        docker tag ${{ secrets.DOCKER_REPO }}:latest ghcr.io/${{ github.repository }}:latest
+        docker push ghcr.io/${{ github.repository }}:latest
+      if: github.ref == 'refs/heads/main'
+    - name: Tag and push the second Docker image to GitHub Packages
+      run: |
+        docker tag ${{ secrets.DOCKER_REPO2 }}:latest ghcr.io/${{ github.repository }}:latest-gcp
+        docker push ghcr.io/${{ github.repository }}:latest
+      if: github.ref == 'refs/heads/main'
     - name: Notify IRC Success
       run: |
         export COMMIT_MSG=$(git log -1 --pretty=%B)

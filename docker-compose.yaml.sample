@@ -3,7 +3,7 @@ version: "3"
 services:
 
   terrariagcp:
-    image: gitea.findlayis.me/chuck/terraria-docker-gcp:latest
+    image: ghcr.io/cfindlayisme/terraria-docker:latest-gcp
     container_name: terrariagcp
     ports:
       - "7777:7777"
